@@ -1,3 +1,5 @@
+print("유저코드값으로 '보고싶어요'리스트 가져오기, rating리스트 가져오기")
+
 ## csv파일 생성
 #with open(r'C:\Users\tiale\Desktop\gwAi\AI_SCHOOL\watchaMovie\user_data.csv', 'w', newline='') as csvfile:
 #    fieldnames = ['user_code', 'user_name']

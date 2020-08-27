@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import csv
 
 print("----------------------------")
 
@@ -39,26 +40,16 @@ for page in range(35):
     soup = BeautifulSoup(response.text, 'html.parser')
     soup_list = list(soup)[0]
     soup_json = json.loads(soup_list)
+    num = len(list(soup_json['result']['result']))
     
-    if pg != 34:
-        for n in range(size):
-            title = soup_json['result']['result'][n]['title']
-            content_type = soup_json['result']['result'][n]['content_type']
-            ratings_avg = round(soup_json['result']['result'][n]['ratings_avg']/2, 1)
-            movie_code = soup_json['result']['result'][n]['code']
-            
-            movie_data = {'title': title, 'content_type': content_type, 'ratings_avg': ratings_avg, 'movie_code': movie_code}
-            watcha_movie_data.append(movie_data)
-    
-    else:
-        for n in range(3):
-            title = soup_json['result']['result'][n]['title']
-            content_type = soup_json['result']['result'][n]['content_type']
-            ratings_avg = round(soup_json['result']['result'][n]['ratings_avg']/2, 1)
-            movie_code = soup_json['result']['result'][n]['code']
-            
-            movie_data = {'title': title, 'content_type': content_type, 'ratings_avg': ratings_avg, 'movie_code': movie_code}
-            watcha_movie_data.append(movie_data)
+    for n in range(num):
+        title = soup_json['result']['result'][n]['title']
+        content_type = soup_json['result']['result'][n]['content_type']
+        ratings_avg = round(soup_json['result']['result'][n]['ratings_avg']/2, 1)
+        movie_code = soup_json['result']['result'][n]['code']
+        
+        movie_data = {'title': title, 'content_type': content_type, 'ratings_avg': ratings_avg, 'movie_code': movie_code}
+        watcha_movie_data.append(movie_data)
     
     pg += 1
     
@@ -66,3 +57,11 @@ for page in range(35):
 
 print("\n\n\n왓챠피디아 별점 TOP// 제목/타입/평점 >>>>\n\n", watcha_movie_data)
 print("\n\n\n\n\n\n\n\n\n")
+
+# csv파일 생성
+with open(r'C:\Users\tiale\Desktop\gwAi\AI_SCHOOL\watchaMovie\watch_top_movie_data.csv', 'w', newline='') as csvfile:
+    fieldnames = ['title', 'content_type', 'ratings_avg', 'movie_code']
+    csvwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    csvwriter.writeheader()
+    for row in watcha_movie_data:
+        csvwriter.writerow(row)
