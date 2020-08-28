@@ -192,7 +192,9 @@ def getUserData(user_code, user_data):
     for user in user_code :
         user_num += 1
 
-        user_one = {}
+        user_one = {
+            'user_code' : user
+        }
         getUserScoring(user, user_one)
         getUserWish(user, user_one)
 
